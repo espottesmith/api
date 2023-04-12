@@ -16,13 +16,9 @@ class MPculesSummaryRester(BaseRester[MoleculeSummaryDoc]):
 
     def search(
         self,
-        charge: Optional[Tuple[int, int]] = None,
-        spin_multiplicity: Optional[Tuple[int, int]] = None,
+        charge: Optional[int] = None,
+        spin_multiplicity: Optional[int] = None,
         nelements: Optional[Tuple[int, int]] = None,
-        # has_solvent: Optional[Union[str, List[str]]] = None,
-        # has_level_of_theory: Optional[Union[str, List[str]]] = None,
-        # has_lot_solvent: Optional[Union[str, List[str]]] = None,
-        # with_solvent: Optional[str] = None,
         chemsys: Optional[Union[str, List[str]]] = None,
         deprecated: Optional[bool] = None,
         elements: Optional[List[str]] = None,
@@ -30,6 +26,10 @@ class MPculesSummaryRester(BaseRester[MoleculeSummaryDoc]):
         formula: Optional[Union[str, List[str]]] = None,
         has_props: Optional[List[HasProps]] = None,
         molecule_ids: Optional[List[MPculeID]] = None,
+        # has_solvent: Optional[Union[str, List[str]]] = None,
+        # has_level_of_theory: Optional[Union[str, List[str]]] = None,
+        # has_lot_solvent: Optional[Union[str, List[str]]] = None,
+        # with_solvent: Optional[str] = None,
         # num_sites: Optional[Tuple[int, int]] = None,
         sort_fields: Optional[List[str]] = None,
         num_chunks: Optional[int] = None,
@@ -41,8 +41,8 @@ class MPculesSummaryRester(BaseRester[MoleculeSummaryDoc]):
         Query core data using a variety of search criteria.
 
         Arguments:
-            charge (Tuple[int, int]): Minimum and maximum charge for the molecule.
-            spin_multiplicity (Tuple[int, int]): Minimum and maximum spin for the molecule.
+            charge (int): Minimum and maximum charge for the molecule.
+            spin_multiplicity (int): Minimum and maximum spin for the molecule.
             nelements (Tuple[int, int]): Minimum and maximum number of elements
             # has_solvent (str, List[str]): Whether the molecule has properties calculated in
             #     solvents (e.g., "SOLVENT=THF", ["SOLVENT=WATER", "VACUUM"])
@@ -75,10 +75,7 @@ class MPculesSummaryRester(BaseRester[MoleculeSummaryDoc]):
         query_params = defaultdict(dict)  # type: dict
 
         min_max = [
-            "charge",
-            "spin_multiplicity",
             "nelements",
-            "electronic_energy",
             "ionization_energy",
             "electron_affinity",
             "reduction_free_energy",
@@ -98,6 +95,12 @@ class MPculesSummaryRester(BaseRester[MoleculeSummaryDoc]):
 
         if molecule_ids:
             query_params.update({"molecule_ids": ",".join(molecule_ids)})
+
+        if charge:
+            query_params.update({"charge": charge})
+
+        if spin_multiplicity:
+            query_params.update({"spin_multiplicity": spin_multiplicity})
 
         if deprecated is not None:
             query_params.update({"deprecated": deprecated})

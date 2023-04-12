@@ -19,7 +19,7 @@ def validate_ids(id_list: List[str]):
     Returns:
         id_list: Returns original ID list if everything is formatted correctly.
     """
-    pattern = "(mp|mvc|mol)-.*"
+    pattern = "(mp|mvc|mol|mpcule)-.*"
 
     for entry in id_list:
         if re.match(pattern, entry) is None:
