@@ -129,7 +129,8 @@ class MPculesBaseMoleculeRester(BaseRester[MoleculeDoc]):
             exclude_elements (List(str)): List of elements to exclude.
             formula (str, List[str]): An alphabetical formula or list of formulas
                 (e.g. "C2 Li2 O4", ["C2 H4", "C2 H6"]).
-            molecule_ids (MPculeID, List[MPculeID]): List of Materials Project Molecule IDs (MPculeIDs) to return data for.
+            molecule_ids (MPculeID, List[MPculeID]): List of Materials Project Molecule IDs (MPculeIDs) to return data
+                for.
             task_ids (str, List[str]): List of Materials Project IDs to return data for.
             sort_fields (List[str]): Fields used to sort results. Prefix with '-' to sort in descending order.
             num_chunks (int): Maximum number of chunks of data to yield. None will yield all possible.

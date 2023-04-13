@@ -41,9 +41,10 @@ class MPculesBondRester(BaseRester[MoleculeBondingDoc]):
         Query MPcules bonding docs using a variety of search criteria.
 
         Arguments:
-            molecule_ids (MPculeID, List[MPculeID]): List of Materials Project Molecule IDs (MPculeIDs) to return data for.
+            molecule_ids (MPculeID, List[MPculeID]): List of Materials Project Molecule IDs (MPculeIDs) to return data
+                for.
             property_ids (str, List[str]): List of property IDs to return data for.
-            method (str): Method used to generate bonding data 
+            method (str): Method used to generate bonding data
                 (e.g. "nbo", "critic2", or "OpenBabelNN + metal_edge_extender")
             bond_type (str): Bond type of interest (e.g. "C-O" for carbon-oxygen bonds)
             max_bond_length (float): Maximum bond length in the molecule of the specified type
