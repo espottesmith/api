@@ -107,8 +107,8 @@ class MPculesBaseMoleculeRester(BaseRester[MoleculeDoc]):
         elements: Optional[List[str]] = None,
         exclude_elements: Optional[List[str]] = None,
         formula: Optional[Union[str, List[str]]] = None,
-        molecule_ids: Optional[List[MPculeID]] = None,
-        task_ids: Optional[List[str]] = None,
+        molecule_ids: Optional[Union[MPculeID, List[MPculeID]]] = None,
+        task_ids: Optional[Union[str, List[str]]] = None,
         sort_fields: Optional[List[str]] = None,
         num_chunks: Optional[int] = None,
         chunk_size: int = 1000,
@@ -129,8 +129,8 @@ class MPculesBaseMoleculeRester(BaseRester[MoleculeDoc]):
             exclude_elements (List(str)): List of elements to exclude.
             formula (str, List[str]): An alphabetical formula or list of formulas
                 (e.g. "C2 Li2 O4", ["C2 H4", "C2 H6"]).
-            molecule_ids (List[MPculeID]): List of Materials Project Molecule IDs (MPculeIDs) to return data for.
-            task_ids (List[str]): List of Materials Project IDs to return data for.
+            molecule_ids (MPculeID, List[MPculeID]): List of Materials Project Molecule IDs (MPculeIDs) to return data for.
+            task_ids (str, List[str]): List of Materials Project IDs to return data for.
             sort_fields (List[str]): Fields used to sort results. Prefix with '-' to sort in descending order.
             num_chunks (int): Maximum number of chunks of data to yield. None will yield all possible.
             chunk_size (int): Number of data entries per chunk.
@@ -175,6 +175,9 @@ class MPculesBaseMoleculeRester(BaseRester[MoleculeDoc]):
             query_params.update({"exclude_elements": ",".join(exclude_elements)})
 
         if task_ids:
+            if isinstance(task_ids, str):
+                task_ids = [task_ids]
+
             query_params.update({"task_ids": ",".join(validate_ids(task_ids))})
 
         if sort_fields:
