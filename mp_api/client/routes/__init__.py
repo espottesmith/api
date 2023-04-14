@@ -1,37 +1,42 @@
 from ast import Import
-from .eos import EOSRester
-from .materials import MaterialsRester
-from .similarity import SimilarityRester
-from .tasks import TaskRester
-from .xas import XASRester
-from .fermi import FermiRester
-from .grain_boundary import GrainBoundaryRester
-from .substrates import SubstratesRester
-from .surface_properties import SurfacePropertiesRester
-from .phonon import PhononRester
-from .elasticity import ElasticityRester
-from .thermo import ThermoRester
-from .dielectric import DielectricRester
-from .doi import DOIRester
-from .piezo import PiezoRester
-from .magnetism import MagnetismRester
-from .summary import SummaryRester
-from .molecules import MoleculesRester
-from .synthesis import SynthesisRester
-from .electrodes import ElectrodeRester
-from .electronic_structure import (
+
+from mp_api.client.routes.materials.eos import EOSRester
+from mp_api.client.routes.materials.materials import MaterialsRester
+from mp_api.client.routes.materials.similarity import SimilarityRester
+from mp_api.client.routes.materials.tasks import TaskRester
+from mp_api.client.routes.materials.xas import XASRester
+from mp_api.client.routes.materials.fermi import FermiRester
+from mp_api.client.routes.materials.grain_boundary import GrainBoundaryRester
+from mp_api.client.routes.materials.substrates import SubstratesRester
+from mp_api.client.routes.materials.surface_properties import SurfacePropertiesRester
+from mp_api.client.routes.materials.phonon import PhononRester
+from mp_api.client.routes.materials.elasticity import ElasticityRester
+from mp_api.client.routes.materials.thermo import ThermoRester
+from mp_api.client.routes.materials.dielectric import DielectricRester
+from mp_api.client.routes.materials.doi import DOIRester
+from mp_api.client.routes.materials.piezo import PiezoRester
+from mp_api.client.routes.materials.magnetism import MagnetismRester
+from mp_api.client.routes.materials.summary import SummaryRester
+from mp_api.client.routes.materials.synthesis import SynthesisRester
+from mp_api.client.routes.materials.electrodes import ElectrodeRester
+from mp_api.client.routes.materials.electronic_structure import (
     ElectronicStructureRester,
     BandStructureRester,
     DosRester,
 )
-from .oxidation_states import OxidationStatesRester
-from .provenance import ProvenanceRester
+from mp_api.client.routes.materials.oxidation_states import OxidationStatesRester
+from mp_api.client.routes.materials.provenance import ProvenanceRester
+from mp_api.client.routes.materials.bonds import BondsRester
+from mp_api.client.routes.materials.robocrys import RobocrysRester
+from mp_api.client.routes.materials.absorption import AbsorptionRester
+
+from mp_api.client.routes.molecules.summary import MPculesSummaryRester
+
+from mp_api.client.routes.legacy.jcesr import MoleculesRester
+
 from ._user_settings import UserSettingsRester
 from ._general_store import GeneralStoreRester
-from .bonds import BondsRester
-from .robocrys import RobocrysRester
-from .absorption import AbsorptionRester
-from mp_api.client.routes.mpcules.summary import MPculesSummaryRester
+
 
 try:
     from .alloys import AlloysRester

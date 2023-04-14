@@ -9,8 +9,8 @@ from emmet.core.molecules_jcesr import MoleculesDoc
 import warnings
 
 
-class MoleculesRester(BaseRester[MoleculesDoc]):
-    suffix = "molecules"
+class LegacyMoleculesRester(BaseRester[MoleculesDoc]):
+    suffix = "jcesr"
     document_model = MoleculesDoc  # type: ignore
     primary_key = "task_id"
 
