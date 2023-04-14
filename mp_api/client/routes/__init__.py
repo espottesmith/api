@@ -13,7 +13,6 @@ from mp_api.client.routes.materials.phonon import PhononRester
 from mp_api.client.routes.materials.elasticity import ElasticityRester
 from mp_api.client.routes.materials.thermo import ThermoRester
 from mp_api.client.routes.materials.dielectric import DielectricRester
-from mp_api.client.routes.materials.doi import DOIRester
 from mp_api.client.routes.materials.piezo import PiezoRester
 from mp_api.client.routes.materials.magnetism import MagnetismRester
 from mp_api.client.routes.materials.summary import SummaryRester
@@ -32,10 +31,11 @@ from mp_api.client.routes.materials.absorption import AbsorptionRester
 
 from mp_api.client.routes.molecules.summary import MPculesSummaryRester
 
-from mp_api.client.routes.legacy.jcesr import MoleculesRester
+from mp_api.client.routes.legacy.jcesr import LegacyMoleculesRester
 
-from ._user_settings import UserSettingsRester
-from ._general_store import GeneralStoreRester
+from mp_api.client.routes.doi import DOIRester
+from mp_api.client.routes._user_settings import UserSettingsRester
+from mp_api.client.routes._general_store import GeneralStoreRester
 
 
 try:

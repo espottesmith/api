@@ -8,7 +8,7 @@ import warnings
 
 
 class ElasticityRester(BaseRester[ElasticityDoc]):
-    suffix = "elasticity"
+    suffix = "materials/elasticity"
     document_model = ElasticityDoc  # type: ignore
     primary_key = "task_id"
 

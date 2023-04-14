@@ -9,7 +9,7 @@ from pymatgen.core.periodic_table import Element
 
 
 class ElectrodeRester(BaseRester[InsertionElectrodeDoc]):
-    suffix = "insertion_electrodes"
+    suffix = "materials/insertion_electrodes"
     document_model = InsertionElectrodeDoc  # type: ignore
     primary_key = "battery_id"
 

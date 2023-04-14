@@ -9,7 +9,7 @@ import warnings
 
 
 class PiezoRester(BaseRester[PiezoelectricDoc]):
-    suffix = "piezoelectric"
+    suffix = "materials/piezoelectric"
     document_model = PiezoelectricDoc  # type: ignore
     primary_key = "material_id"
 

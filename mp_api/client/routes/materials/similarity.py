@@ -3,7 +3,7 @@ from emmet.core.similarity import SimilarityDoc
 
 
 class SimilarityRester(BaseRester[SimilarityDoc]):
-    suffix = "similarity"
+    suffix = "materials/similarity"
     document_model = SimilarityDoc  # type: ignore
     primary_key = "material_id"
 

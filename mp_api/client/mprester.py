@@ -80,7 +80,7 @@ class MPRester:
     mpcules_summary: MPculesSummaryRester
     
     # Legacy
-    molecules: MoleculesRester
+    legacy_jcesr: LegacyMoleculesRester
 
     # General
     doi: DOIRester

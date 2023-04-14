@@ -9,7 +9,7 @@ import warnings
 
 
 class DielectricRester(BaseRester[DielectricDoc]):
-    suffix = "dielectric"
+    suffix = "materials/dielectric"
     document_model = DielectricDoc  # type: ignore
     primary_key = "material_id"
 

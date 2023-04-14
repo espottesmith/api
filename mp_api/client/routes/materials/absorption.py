@@ -8,7 +8,7 @@ from emmet.core.absorption import AbsorptionDoc
 
 class AbsorptionRester(BaseRester[AbsorptionDoc]):
 
-    suffix = "absorption"
+    suffix = "materials/absorption"
     document_model = AbsorptionDoc  # type: ignore
     primary_key = "material_id"
 

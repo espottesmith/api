@@ -1,6 +1,6 @@
 import os
 import pytest
-from mp_api.client.routes.molecules import MoleculesRester
+from mp_api.client.routes.legacy.jcesr import LegacyMoleculesRester
 from pymatgen.core.periodic_table import Element
 
 import typing
@@ -8,7 +8,7 @@ import typing
 
 @pytest.fixture
 def rester():
-    rester = MoleculesRester()
+    rester = LegacyMoleculesRester()
     yield rester
     rester.session.close()
 
