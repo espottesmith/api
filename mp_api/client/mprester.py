@@ -45,37 +45,45 @@ class MPRester:
     # To re-generate this list, use:
     # for rester in MPRester()._all_resters:
     #     print(f"{rester.suffix.replace('/', '_')}: {rester.__class__.__name__}")
-    eos: EOSRester
-    materials: MaterialsRester
-    similarity: SimilarityRester
-    tasks: TaskRester
-    xas: XASRester
-    fermi: FermiRester
-    grain_boundary: GrainBoundaryRester
-    substrates: SubstratesRester
-    surface_properties: SurfacePropertiesRester
-    phonon: PhononRester
-    elasticity: ElasticityRester
-    thermo: ThermoRester
-    dielectric: DielectricRester
-    doi: DOIRester
-    piezoelectric: PiezoRester
-    magnetism: MagnetismRester
-    summary: SummaryRester
-    robocrys: RobocrysRester
-    molecules: MoleculesRester
-    synthesis: SynthesisRester
-    insertion_electrodes: ElectrodeRester
-    charge_density: ChargeDensityRester
-    electronic_structure: ElectronicStructureRester
-    electronic_structure_bandstructure: BandStructureRester
-    electronic_structure_dos: DosRester
-    oxidation_states: OxidationStatesRester
-    provenance: ProvenanceRester
-    bonds: BondsRester
-    alloys: AlloysRester
-    absorption: AbsorptionRester
+    
+    # Materials
+    materials_eos: EOSRester
+    materials_materials: MaterialsRester
+    materials_similarity: SimilarityRester
+    materials_tasks: TaskRester
+    materials_xas: XASRester
+    materials_fermi: FermiRester
+    materials_grain_boundary: GrainBoundaryRester
+    materials_substrates: SubstratesRester
+    materials_surface_properties: SurfacePropertiesRester
+    materials_phonon: PhononRester
+    materials_elasticity: ElasticityRester
+    materials_thermo: ThermoRester
+    materials_dielectric: DielectricRester
+    materials_piezoelectric: PiezoRester
+    materials_magnetism: MagnetismRester
+    materials_summary: SummaryRester
+    materials_robocrys: RobocrysRester
+    materials_synthesis: SynthesisRester
+    materials_insertion_electrodes: ElectrodeRester
+    materials_charge_density: ChargeDensityRester
+    materials_electronic_structure: ElectronicStructureRester
+    materials_electronic_structure_bandstructure: BandStructureRester
+    materials_electronic_structure_dos: DosRester
+    materials_oxidation_states: OxidationStatesRester
+    materials_provenance: ProvenanceRester
+    materials_bonds: BondsRester
+    materials_alloys: AlloysRester
+    materials_absorption: AbsorptionRester
+    
+    # Molecules
     mpcules_summary: MPculesSummaryRester
+    
+    # Legacy
+    molecules: MoleculesRester
+
+    # General
+    doi: DOIRester
     _user_settings: UserSettingsRester
     _general_store: GeneralStoreRester
 
