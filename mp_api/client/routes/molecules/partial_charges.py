@@ -42,7 +42,7 @@ class MoleculesPartialChargeRester(BaseRester[PartialChargesDoc]):
                 for.
             property_ids (str, List[str]): List of property IDs to return data for.
             method (str): Method used to generate bonding data
-                (e.g. "nbo", "critic2", or "OpenBabelNN + metal_edge_extender")
+                (e.g. "nbo", "critic2", "mulliken", or "resp")
             charge (Tuple[int, int]): Minimum and maximum charge for the molecule.
             spin_multiplicity (Tuple[int, int]): Minimum and maximum spin for the molecule.
             level_of_theory (str): Desired level of theory (e.g. "wB97X-V/def2-TZVPPD/SMD")
