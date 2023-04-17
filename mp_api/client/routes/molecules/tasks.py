@@ -8,8 +8,8 @@ import warnings
 from mp_api.client.core.utils import validate_ids
 
 
-class MPculesTaskRester(BaseRester[TaskDocument]):
-    suffix = "mpcules/tasks"
+class MoleculesTaskRester(BaseRester[TaskDocument]):
+    suffix = "molecules/tasks"
     document_model = TaskDocument
     primary_key = "task_id"
 

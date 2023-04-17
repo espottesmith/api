@@ -1,5 +1,5 @@
 from emmet.core.molecules.summary import HasProps
-from mp_api.client.routes.mpcules.summary import MPculesSummaryRester
+from mp_api.client.routes.mpcules.summary import MoleculesSummaryRester
 import os
 import pytest
 
@@ -35,7 +35,7 @@ custom_field_tests = {
 
 @pytest.mark.skipif(os.environ.get("MP_API_KEY", None) is None, reason="No API key found.")
 def test_client():
-    search_method = MPculesSummaryRester().search
+    search_method = MoleculesSummaryRester().search
 
     # Get list of parameters
     param_tuples = list(typing.get_type_hints(search_method).items())

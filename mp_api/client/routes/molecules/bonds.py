@@ -9,8 +9,8 @@ import warnings
 from mp_api.client.core.utils import validate_ids
 
 
-class MPculesBondRester(BaseRester[MoleculeBondingDoc]):
-    suffix = "mpcules/bonding"
+class MoleculesBondRester(BaseRester[MoleculeBondingDoc]):
+    suffix = "molecules/bonding"
     document_model = MoleculeBondingDoc
     primary_key = "property_id"
 
@@ -70,7 +70,7 @@ class MPculesBondRester(BaseRester[MoleculeBondingDoc]):
                 if all_fields is False.
 
         Returns:
-            ([TaskDocument]) List of task documents
+            ([MoleculeBondingDoc]) List of bonding documents
         """
 
         query_params = {}  # type: dict

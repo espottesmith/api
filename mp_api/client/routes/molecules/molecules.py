@@ -15,7 +15,7 @@ from mp_api.client.core.utils import validate_ids
 _EMMET_SETTINGS = EmmetSettings()
 
 
-class MPculesBaseMoleculeRester(BaseRester[MoleculeDoc]):
+class BaseMoleculeRester(BaseRester[MoleculeDoc]):
     suffix = None
     document_model = MoleculeDoc
     primary_key = "molecule_id"
@@ -191,9 +191,9 @@ class MPculesBaseMoleculeRester(BaseRester[MoleculeDoc]):
         )
 
 
-class MPculesAssociatedMoleculeRester(MPculesBaseMoleculeRester):
-    suffix = "mpcules/assoc"
+class AssociatedMoleculeRester(BaseMoleculeRester):
+    suffix = "molecules/assoc"
 
 
-class MPculesMoleculeRester(MPculesBaseMoleculeRester):
-    suffix = "mpcules/molecules"
+class MoleculeRester(BaseMoleculeRester):
+    suffix = "molecules/molecules"

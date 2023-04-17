@@ -9,8 +9,8 @@ from mp_api.client.core import BaseRester
 from mp_api.client.core.utils import validate_ids
 
 
-class MPculesSummaryRester(BaseRester[MoleculeSummaryDoc]):
-    suffix = "mpcules"
+class MoleculesSummaryRester(BaseRester[MoleculeSummaryDoc]):
+    suffix = "molecules"
     document_model = MoleculeSummaryDoc  # type: ignore
     primary_key = "molecule_id"
 
@@ -70,6 +70,7 @@ class MPculesSummaryRester(BaseRester[MoleculeSummaryDoc]):
                 Default is material_id if all_fields is False.
 
         Returns:
+            ([MoleculeSummaryDoc]) List of molecules summary documents
         """
 
         query_params = defaultdict(dict)  # type: dict
