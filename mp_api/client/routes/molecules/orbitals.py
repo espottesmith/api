@@ -27,18 +27,19 @@ class MoleculesOrbitalsRester(BaseRester[OrbitalDoc]):
         elements: Optional[List[str]] = None,
         exclude_elements: Optional[List[str]] = None,
         chemsys: Optional[Union[str, List[str]]] = None,
-        open_shell: Optional[bool] = False,
-        electron_type: Optional[str] = None,
+        electron_type_population: Optional[str] = None,
         core_electrons: Optional[Tuple[float, float]] = None,
         valence_electrons: Optional[Tuple[float, float]] = None,
         rydberg_electrons: Optional[Tuple[float, float]] = None,
         total_electrons: Optional[Tuple[float, float]] = None,
+        electron_type_lp: Optional[str] = None,
         lp_type: Optional[str] = None,
         s_character: Optional[Tuple[float, float]] = None,
         p_character: Optional[Tuple[float, float]] = None,
         d_character: Optional[Tuple[float, float]] = None,
         f_character: Optional[Tuple[float, float]] = None,
         lp_occupancy: Optional[Tuple[float, float]] = None,
+        electron_type_bond: Optional[str] = None,
         bond_type: Optional[str] = None,
         s_character_atom1: Optional[Tuple[float, float]] = None,
         s_character_atom2: Optional[Tuple[float, float]] = None,
@@ -51,6 +52,7 @@ class MoleculesOrbitalsRester(BaseRester[OrbitalDoc]):
         polarization_atom1: Optional[Tuple[float, float]] = None,
         polarization_atom2: Optional[Tuple[float, float]] = None,
         bond_occupancy: Optional[Tuple[float, float]] = None,
+        electron_type_interaction: Optional[str] = None,
         donor_type: Optional[str] = None,
         acceptor_type: Optional[str] = None,
         perturbation_energy: Optional[Tuple[float, float]] = None,
@@ -88,9 +90,55 @@ class MoleculesOrbitalsRester(BaseRester[OrbitalDoc]):
             exclude_elements (List(str)): List of elements to exclude.
             chemsys (str, List[str]): A chemical system, list of chemical systems
                 (e.g., Li-C-O, [C-O-H-N, Li-N]), or single formula (e.g., C2 H4).
-            open_shell (bool): Is the molecule open-shell (default False)
-                Note: This may cause problems if combined with a spin_multiplicity query
-            
+            electron_type_population (str): Should alpha ('alpha'), beta ('beta'), or all electrons (None) be
+                considered in a query of natural electron populations?
+            core_electrons (Tuple[float, float]): Minimum and maximum number of core electrons in an atom
+                in this molecule.
+            valence_electrons (Tuple[float, float]): Minimum and maximum number of valence electrons in an atom
+                in this molecule.
+            rydberg_electrons (Tuple[float, float]): Minimum and maximum number of rydberg electrons in an atom
+                in this molecule.
+            total_electrons: (Tuple[float, float]): Minimum and maximum number of total electrons in an atom
+                in this molecule.
+            electron_type_lp (str): Should alpha ('alpha'), beta ('beta'), or all electrons (None) be
+                considered in a query of lone pairs?
+            lp_type (str): Type of orbital - "LP" for "lone pair" or "LV" for "lone vacant"
+            s_character (Tuple[float, float]): Min and max percentage of the lone pair constituted by s atomic orbitals.
+            p_character (Tuple[float, float]): Min and max percentage of the lone pair constituted by p atomic orbitals.
+            d_character (Tuple[float, float]): Min and max percentage of the lone pair constituted by d atomic orbitals.
+            f_character (Tuple[float, float]): Min and max percentage of the lone pair constituted by f atomic orbitals.
+            lp_occupancy(Tuple[float, float]): Min and max number of electrons in the lone pair.
+            electron_type_bond (str): Should alpha ('alpha'), beta ('beta'), or all electrons (None) be
+                considered in a query of bonds?
+            bond_type (str): Type of orbital, e.g. "BD" for bonding or "BD*" for antibonding
+            s_character_atom1 (Tuple[float, float]): Min and max percentage of the bond constituted by s atomic orbitals
+                on the first atom.
+            s_character_atom2 (Tuple[float, float]): Min and max percentage of the bond constituted by s atomic orbitals
+                on the second atom.
+            p_character_atom1 (Tuple[float, float]): Min and max percentage of the bond constituted by p atomic orbitals
+                on the first atom.
+            p_character_atom2 (Tuple[float, float]): Min and max percentage of the bond constituted by p atomic orbitals
+                on the second atom.
+            d_character_atom1 (Tuple[float, float]): Min and max percentage of the bond constituted by d atomic orbitals
+                on the first atom.
+            d_character_atom2 (Tuple[float, float]): Min and max percentage of the bond constituted by d atomic orbitals
+                on the second atom.
+            f_character_atom1 (Tuple[float, float]): Min and max percentage of the bond constituted by f atomic orbitals
+                on the first atom.
+            f_character_atom2 (Tuple[float, float]): Min and max percentage of the bond constituted by f atomic orbitals
+                on the second atom.
+            polarization_atom1 (Tuple[float, float]): Min and max fraction of electrons in the bond donated by the
+                first atom.
+            polarization_atom2 (Tuple[float, float]): Min and max fraction of electrons in the bond donated by the
+                second atom.
+            bond_occupancy (Tuple[float, float]): Min and max number of electrons in the bond.
+            electron_type_interaction (str): Should alpha ('alpha'), beta ('beta'), or all electrons (None) be
+                considered in a query of orbital interactions?
+            donor_type (str): Type of donor orbital, e.g. 'BD' for bonding or 'RY*' for anti-Rydberg
+            acceptor_type (str): Type of acceptor orbital, e.g. 'BD' for bonding or 'RY*' for anti-Rydberg
+            perturbation_energy (Tuple[float, float]): Min and max perturbation energy of the interaction
+            energy_difference (Tuple[float, float]): Min and max energy difference between interacting orbitals
+            fock_element (Tuple[float, float]): Min and max interaction Fock matrix element
             num_chunks (int): Maximum number of chunks of data to yield. None will yield all possible.
             sort_fields (List[str]): Fields used to sort results. Prefix with '-' to sort in descending order.
             chunk_size (int): Number of data entries per chunk.
@@ -106,12 +154,29 @@ class MoleculesOrbitalsRester(BaseRester[OrbitalDoc]):
         query_params = {}  # type: dict
 
         min_max = [
-            "electron_affinity",
-            "ionization_energy",
-            "reduction_energy",
-            "reduction_free_energy",
-            "oxidation_energy",
-            "oxidation_free_energy",
+            "core_electrons",
+            "valence_electrons",
+            "rydberg_electrons",
+            "total_electrons",
+            "s_character",
+            "p_character",
+            "d_character",
+            "f_character",
+            "lp_occupancy",
+            "s_character_atom1",
+            "s_character_atom2",
+            "p_character_atom1",
+            "p_character_atom2",
+            "d_character_atom1",
+            "d_character_atom2",
+            "f_character_atom1",
+            "f_character_atom2",
+            "polarization_atom1",
+            "polarization_atom2",
+            "bond_occupancy",
+            "perturbation_energy",
+            "energy_difference",
+            "fock_element",
         ]
 
         for param, value in locals().items():
@@ -120,8 +185,8 @@ class MoleculesOrbitalsRester(BaseRester[OrbitalDoc]):
                     value = (value, value)
                 query_params.update(
                     {
-                        f"{param}_min": value[0],
-                        f"{param}_max": value[1],
+                        f"min_{param}": value[0],
+                        f"max_{param}": value[1],
                     }
                 )
 
@@ -170,20 +235,7 @@ class MoleculesOrbitalsRester(BaseRester[OrbitalDoc]):
         if exclude_elements:
             query_params.update({"exclude_elements": ",".join(exclude_elements)})
 
-        if electrode:
-            query_params.update({"electrode": electrode})
-
-        if min_reduction_potential:
-            query_params.update({"min_reduction_potential": min_reduction_potential})
-
-        if max_reduction_potential:
-            query_params.update({"max_reduction_potential": max_reduction_potential})
-
-        if min_oxidation_potential:
-            query_params.update({"min_oxidation_potential": min_oxidation_potential})
-
-        if max_oxidation_potential:
-            query_params.update({"max_oxidation_potential": max_oxidation_potential})
+        
 
         return super()._search(
             num_chunks=num_chunks,
