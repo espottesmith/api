@@ -32,6 +32,12 @@ class MoleculesRedoxRester(BaseRester[RedoxDoc]):
         max_reduction_potential: Optional[float] = None,
         min_oxidation_potential: Optional[float] = None,
         max_oxidation_potential: Optional[float] = None,
+        electron_affinity: Optional[Tuple[float, float]] = None,
+        ionization_energy: Optional[Tuple[float, float]] = None,
+        reduction_energy: Optional[Tuple[float, float]] = None,
+        reduction_free_energy: Optional[Tuple[float, float]] = None,
+        oxidation_energy: Optional[Tuple[float, float]] = None,
+        oxidation_free_energy: Optional[Tuple[float, float]] = None,
         num_chunks: Optional[int] = None,
         sort_fields: Optional[List[str]] = None,
         chunk_size: int = 1000,
@@ -51,19 +57,24 @@ class MoleculesRedoxRester(BaseRester[RedoxDoc]):
             solvent (str): Desired solvent (e.g. "SOLVENT=WATER")
             lot_solvent (str): Desired combination of level of theory and solvent
                 (e.g. "wB97X-V/def2-TZVPPD/SMD(SOLVENT=THF)")
-            correction_level_of_theory (str): Desired correction level of theory (e.g. "wB97X-V/def2-TZVPPD/SMD")
-            correction_solvent (str): Desired correction solvent (e.g. "SOLVENT=WATER")
-            correction_lot_solvent (str): Desired correction combination of level of theory and solvent
-                (e.g. "wB97X-V/def2-TZVPPD/SMD(SOLVENT=THF)")
-            combined_lot_solvent (str): Desired combination of level of theory and solvent including both main
-                thermo calculation and single-point energy correction
-                (e.g. "wB97X-D/def2-SVPD/VACUUM//wB97X-V/def2-TZVPPD/SMD(SOLVENT=THF)")
             formula (str, List[str]): An alphabetical formula or list of formulas
                 (e.g. "C2 Li2 O4", ["C2 H4", "C2 H6"]).
             elements (List[str]): A list of elements.
             exclude_elements (List(str)): List of elements to exclude.
             chemsys (str, List[str]): A chemical system, list of chemical systems
                 (e.g., Li-C-O, [C-O-H-N, Li-N]), or single formula (e.g., C2 H4).
+            electrode (str): For redox potential queries, a string representation of the reference
+                electrode (currently accepted: "H", "Li", "Mg", "Ca")
+            min_reduction_potential (float): Minimum reduction potential considered
+            max_reduction_potential (float): Maximum reduction potential considered
+            min_oxidation_potential (float): Minimum oxidation potential considered
+            max_oxidation_potential (float): Maximum oxidation potential considered
+            electron_affinity (Tuple[float, float]): Minimum and maximum electron affinities
+            ionization_energy (Tuple[float, float]): Minimum and maximum ionization energies
+            reduction_energy (Tuple[float, float]): Minimum and maximum reduction energies
+            reduction_free_energy (Tuple[float, float]): Minimum and maximum reduction free energies
+            oxidation_energy (Tuple[float, float]): Minimum and maximum oxidation energies
+            oxidation_free_energy (Tuple[float, float]): Minimum and maximum oxidation free energies
             num_chunks (int): Maximum number of chunks of data to yield. None will yield all possible.
             sort_fields (List[str]): Fields used to sort results. Prefix with '-' to sort in descending order.
             chunk_size (int): Number of data entries per chunk.
