@@ -29,7 +29,18 @@ from mp_api.client.routes.materials.bonds import BondsRester
 from mp_api.client.routes.materials.robocrys import RobocrysRester
 from mp_api.client.routes.materials.absorption import AbsorptionRester
 
-from mp_api.client.routes.molecules.summary import MPculesSummaryRester
+from mp_api.client.routes.molecules.tasks import MoleculesTaskRester
+from mp_api.client.routes.molecules.molecules import (
+    AssociatedMoleculeRester,
+    MoleculeRester
+)
+from mp_api.client.routes.molecules.bonds import MoleculesBondRester
+from mp_api.client.routes.molecules.partial_charges import MoleculesPartialChargesRester
+from mp_api.client.routes.molecules.partial_spins import MoleculesPartialSpinsRester
+from mp_api.client.routes.molecules.redox import MoleculesRedoxRester
+from mp_api.client.routes.molecules.thermo import MoleculesThermoRester
+from mp_api.client.routes.molecules.vibrations import MoleculesVibrationRester
+from mp_api.client.routes.molecules.summary import MoleculesSummaryRester
 
 from mp_api.client.routes.legacy.jcesr import LegacyMoleculesRester
 

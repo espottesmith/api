@@ -9,7 +9,7 @@ import warnings
 from mp_api.client.core.utils import validate_ids
 
 
-class MoleculesPartialChargeRester(BaseRester[PartialChargesDoc]):
+class MoleculesPartialChargesRester(BaseRester[PartialChargesDoc]):
     suffix = "molecules/partial_charges"
     document_model = PartialChargesDoc
     primary_key = "property_id"

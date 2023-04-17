@@ -75,10 +75,19 @@ class MPRester:
     materials_bonds: BondsRester
     materials_alloys: AlloysRester
     materials_absorption: AbsorptionRester
-    
+
     # Molecules
-    mpcules_summary: MPculesSummaryRester
-    
+    molecules_tasks: MoleculesTaskRester
+    molecules_assoc: AssociatedMoleculeRester
+    molecules_molecules: MoleculeRester
+    molecules_bonds: MoleculesBondRester
+    molecules_partial_charges: MoleculesPartialChargeRester
+    molecules_partial_spins: MoleculesPartialSpinsRester
+    molecules_redox: MoleculesRedoxRester
+    molecules_thermo: MoleculesThermoRester
+    molecules_vibrations: MoleculesVibrationRester
+    molecules_summary: MoleculesSummaryRester
+
     # Legacy
     legacy_jcesr: LegacyMoleculesRester
 
