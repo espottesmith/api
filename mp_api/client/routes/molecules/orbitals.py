@@ -235,7 +235,29 @@ class MoleculesOrbitalsRester(BaseRester[OrbitalDoc]):
         if exclude_elements:
             query_params.update({"exclude_elements": ",".join(exclude_elements)})
 
-        
+        if electron_type_population:
+            query_params.update({"electron_type_population": electron_type_population})
+
+        if electron_type_lp:
+            query_params.update({"electron_type_lp": electron_type_lp})
+
+        if lp_type:
+            query_params.update({"lp_type": lp_type})
+
+        if electron_type_bond:
+            query_params.update({"electron_type_bond": electron_type_bond})
+
+        if bond_type:
+            query_params.update({"bond_type": bond_type})
+
+        if electron_type_interaction:
+            query_params.update({"electron_type_interaction": electron_type_interaction})
+
+        if donor_type:
+            query_params.update({"donor_type": donor_type})
+
+        if acceptor_type:
+            query_params.update({"acceptor_type": acceptor_type})
 
         return super()._search(
             num_chunks=num_chunks,
