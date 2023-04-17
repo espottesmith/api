@@ -27,6 +27,35 @@ class MoleculesOrbitalsRester(BaseRester[OrbitalDoc]):
         elements: Optional[List[str]] = None,
         exclude_elements: Optional[List[str]] = None,
         chemsys: Optional[Union[str, List[str]]] = None,
+        open_shell: Optional[bool] = False,
+        electron_type: Optional[str] = None,
+        core_electrons: Optional[Tuple[float, float]] = None,
+        valence_electrons: Optional[Tuple[float, float]] = None,
+        rydberg_electrons: Optional[Tuple[float, float]] = None,
+        total_electrons: Optional[Tuple[float, float]] = None,
+        lp_type: Optional[str] = None,
+        s_character: Optional[Tuple[float, float]] = None,
+        p_character: Optional[Tuple[float, float]] = None,
+        d_character: Optional[Tuple[float, float]] = None,
+        f_character: Optional[Tuple[float, float]] = None,
+        lp_occupancy: Optional[Tuple[float, float]] = None,
+        bond_type: Optional[str] = None,
+        s_character_atom1: Optional[Tuple[float, float]] = None,
+        s_character_atom2: Optional[Tuple[float, float]] = None,
+        p_character_atom1: Optional[Tuple[float, float]] = None,
+        p_character_atom2: Optional[Tuple[float, float]] = None,
+        d_character_atom1: Optional[Tuple[float, float]] = None,
+        d_character_atom2: Optional[Tuple[float, float]] = None,
+        f_character_atom1: Optional[Tuple[float, float]] = None,
+        f_character_atom2: Optional[Tuple[float, float]] = None,
+        polarization_atom1: Optional[Tuple[float, float]] = None,
+        polarization_atom2: Optional[Tuple[float, float]] = None,
+        bond_occupancy: Optional[Tuple[float, float]] = None,
+        donor_type: Optional[str] = None,
+        acceptor_type: Optional[str] = None,
+        perturbation_energy: Optional[Tuple[float, float]] = None,
+        energy_difference: Optional[Tuple[float, float]] = None,
+        fock_element: Optional[Tuple[float, float]] = None,
         num_chunks: Optional[int] = None,
         sort_fields: Optional[List[str]] = None,
         chunk_size: int = 1000,
@@ -59,6 +88,9 @@ class MoleculesOrbitalsRester(BaseRester[OrbitalDoc]):
             exclude_elements (List(str)): List of elements to exclude.
             chemsys (str, List[str]): A chemical system, list of chemical systems
                 (e.g., Li-C-O, [C-O-H-N, Li-N]), or single formula (e.g., C2 H4).
+            open_shell (bool): Is the molecule open-shell (default False)
+                Note: This may cause problems if combined with a spin_multiplicity query
+            
             num_chunks (int): Maximum number of chunks of data to yield. None will yield all possible.
             sort_fields (List[str]): Fields used to sort results. Prefix with '-' to sort in descending order.
             chunk_size (int): Number of data entries per chunk.
