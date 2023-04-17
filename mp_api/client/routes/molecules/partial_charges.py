@@ -35,7 +35,7 @@ class MoleculesPartialChargeRester(BaseRester[PartialChargesDoc]):
         fields: Optional[List[str]] = None,
     ):
         """
-        Query MPcules partial charges docs using a variety of search criteria.
+        Query molecules partial charges docs using a variety of search criteria.
 
         Arguments:
             molecule_ids (MPculeID, List[MPculeID]): List of Materials Project Molecule IDs (MPculeIDs) to return data

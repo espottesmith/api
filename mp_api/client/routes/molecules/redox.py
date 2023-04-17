@@ -39,7 +39,7 @@ class MoleculesRedoxRester(BaseRester[RedoxDoc]):
         fields: Optional[List[str]] = None,
     ):
         """
-        Query MPcules redox docs using a variety of search criteria.
+        Query molecules redox docs using a variety of search criteria.
 
         Arguments:
             molecule_ids (MPculeID, List[MPculeID]): List of Materials Project Molecule IDs (MPculeIDs) to return data

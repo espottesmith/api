@@ -49,7 +49,7 @@ class MoleculesThermoRester(BaseRester[MoleculeThermoDoc]):
         fields: Optional[List[str]] = None,
     ):
         """
-        Query MPcules thermo docs using a variety of search criteria.
+        Query molecules thermo docs using a variety of search criteria.
 
         Arguments:
             molecule_ids (MPculeID, List[MPculeID]): List of Materials Project Molecule IDs (MPculeIDs) to return data
