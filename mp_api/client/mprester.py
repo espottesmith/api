@@ -81,7 +81,7 @@ class MPRester:
     molecules_assoc: AssociatedMoleculeRester
     molecules_molecules: MoleculeRester
     molecules_bonds: MoleculesBondRester
-    molecules_partial_charges: MoleculesPartialChargeRester
+    molecules_partial_charges: MoleculesPartialChargesRester
     molecules_partial_spins: MoleculesPartialSpinsRester
     molecules_redox: MoleculesRedoxRester
     molecules_thermo: MoleculesThermoRester
