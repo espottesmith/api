@@ -58,7 +58,19 @@ from mp_api.client.routes.materials import (
     XASRester,
 )
 from mp_api.client.routes.materials.materials import MaterialsRester
-from mp_api.client.routes.molecules import MoleculeRester
+from mp_api.client.routes.molecules import (
+    MoleculesBondRester,
+    AssociatedMoleculeRester,
+    MoleculeRester,
+    MoleculesOrbitalsRester,
+    MoleculesPartialChargesRester,
+    MoleculesPartialSpinsRester,
+    MoleculesRedoxRester,
+    MoleculesSummaryRester,
+    MoleculesTaskRester,
+    MoleculesThermoRester,
+    MoleculesVibrationRester,
+)
 
 _DEPRECATION_WARNING = (
     "MPRester is being modernized. Please use the new method suggested and "

@@ -62,8 +62,8 @@ class MoleculesSummaryRester(BaseRester[MoleculeSummaryDoc]):
             num_chunks (int): Maximum number of chunks of data to yield. None will yield all possible.
             chunk_size (int): Number of data entries per chunk.
             all_fields (bool): Whether to return all fields in the document. Defaults to True.
-            fields (List[str]): List of fields in SearchDoc to return data for.
-                Default is material_id if all_fields is False.
+            fields (List[str]): List of fields in MoleculeSummaryDoc to return data for.
+                Default is "molecule_id" if all_fields is False.
 
         Returns:
             ([MoleculeSummaryDoc]) List of molecules summary documents
@@ -72,10 +72,6 @@ class MoleculesSummaryRester(BaseRester[MoleculeSummaryDoc]):
 
         min_max = [
             "nelements",
-            "ionization_energy",
-            "electron_affinity",
-            "reduction_free_energy",
-            "oxidation_free_energy",
         ]
 
         for param, value in locals().items():

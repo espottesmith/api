@@ -38,7 +38,7 @@ class MoleculesTaskRester(BaseRester[TaskDocument]):
             chunk_size (int): Number of data entries per chunk. Max size is 100.
             all_fields (bool): Whether to return all fields in the document. Defaults to True.
             fields (List[str]): List of fields in TaskDocument to return data for.
-                Default is material_id, last_updated, and formula_pretty if all_fields is False.
+                Default is "task_id", "last_updated", and "formula_alphabetical" if all_fields is False.
 
         Returns:
             ([TaskDocument]) List of task documents

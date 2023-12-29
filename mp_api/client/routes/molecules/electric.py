@@ -1,49 +1,48 @@
 from __future__ import annotations
 
-from emmet.core.molecules.bonds import MoleculeBondingDoc
+from typing import Literal
+
+from emmet.core.molecules.electric import ElectricMultipoleDoc
 from emmet.core.mpid import MPculeID
 
 from mp_api.client.core import BaseRester
 
 
-class MoleculesBondRester(BaseRester[MoleculeBondingDoc]):
-    suffix = "molecules/bonding"
-    document_model = MoleculeBondingDoc
+class MoleculesElectricMultipoleRester(BaseRester[ElectricMultipoleDoc]):
+    suffix = "molecules/multipoles"
+    document_model = ElectricMultipoleDoc
     primary_key = "property_id"
 
     def search(
         self,
         molecule_ids: MPculeID | list[MPculeID] | None = None,
         property_ids: str | list[str] | None = None,
-        method: str | None = None,
-        bond_type: str | None = None,
-        max_bond_length: float | None = None,
-        min_bond_length: float | None = None,
         charge: int | None = None,
         spin_multiplicity: int | None = None,
         level_of_theory: str | None = None,
         solvent: str | None = None,
         lot_solvent: str | None = None,
         formula: str | list[str] | None = None,
+        chemsys: str | list[str] | None = None,
         elements: list[str] | None = None,
         exclude_elements: list[str] | None = None,
-        chemsys: str | list[str] | None = None,
+        moment_type: Literal["dipole", "resp_dipole", "quadrupole", "octopole", "hexadecapole"] | None = None,
+        component: str | None = None,
+        min_component_value: float | None = None,
+        max_component_value: float | None = None,
+        total_dipole: Tuple[float, float] | None = None,
+        resp_total_dipole: Tuple[float, float] | None = None,
         num_chunks: int | None = None,
         chunk_size: int = 1000,
         all_fields: bool = True,
         fields: list[str] | None = None,
     ):
-        """Query molecules bonding docs using a variety of search criteria.
+        """Query molecules partial charges docs using a variety of search criteria.
 
         Arguments:
             molecule_ids (MPculeID, List[MPculeID]): List of Materials Project Molecule IDs (MPculeIDs) to return data
                 for.
             property_ids (str, List[str]): List of property IDs to return data for.
-            method (str): Method used to generate bonding data
-                (e.g. "nbo", "critic2", or "OpenBabelNN + metal_edge_extender")
-            bond_type (str): Bond type of interest (e.g. "C-O" for carbon-oxygen bonds)
-            max_bond_length (float): Maximum bond length in the molecule of the specified type
-            min_bond_length (float): Minimum bond length in the molecule of the specified type
             charge (Tuple[int, int]): Minimum and maximum charge for the molecule.
             spin_multiplicity (Tuple[int, int]): Minimum and maximum spin for the molecule.
             level_of_theory (str): Desired level of theory (e.g. "wB97X-V/def2-TZVPPD/SMD")
@@ -52,21 +51,46 @@ class MoleculesBondRester(BaseRester[MoleculeBondingDoc]):
                 (e.g. "wB97X-V/def2-TZVPPD/SMD(SOLVENT=THF)")
             formula (str, List[str]): An alphabetical formula or list of formulas
                 (e.g. "C2 Li2 O4", ["C2 H4", "C2 H6"]).
-            elements (List[str]): A list of elements.
-            exclude_elements (List(str)): List of elements to exclude.
             chemsys (str, List[str]): A chemical system, list of chemical systems
                 (e.g., Li-C-O, [C-O-H-N, Li-N]), or single formula (e.g., C2 H4).
+            elements (List[str]): A list of elements.
+            exclude_elements (List(str)): List of elements to exclude.
+            moment_type (Literal["dipole", "resp_dipole", "quadrupole", "octopole", "hexadecapole"]): Type of multipole
+                moment to query on.
+            component (str): Multipole component to query on. Valid entries depend on moment type. For instance, for
+                "dipole", valid components are "X", "Y", and "Z".
+            min_component_value (float): Minimum value for the multipole moment component of interest.
+            max_component_value (float): Maximum value for the multipole moment component of interest.
+            total_dipole (float): Minimum and maximum value for the total dipole.
+            resp_total_dipole (float): Minimum and maximum value for the total dipole calculated with the restrained
+                electrostatic potential (RESP) method.
             num_chunks (int): Maximum number of chunks of data to yield. None will yield all possible.
             chunk_size (int): Number of data entries per chunk.
             all_fields (bool): Whether to return all fields in the document. Defaults to True.
-            fields (List[str]): List of fields in MoleculeBondingDoc to return data for.
-                Default is "molecule_id", "property_id", "solvent", "method", "last_updated"
+            fields (List[str]): List of fields in ElectricMultipoleDoc to return data for.
+                Default is "molecule_id", "property_id", "solvent", "last_updated"
                 if all_fields is False.
 
         Returns:
-            ([MoleculeBondingDoc]) List of bonding documents
+            ([ElectricMultipoleDoc]) List of partial charges documents
         """
-        query_params = {}  # type: dict
+        query_params = dict()  # type: dict
+
+        min_max = [
+            "total_dipole",
+            "resp_total_dipole"
+        ]
+
+        for param, value in locals().items():
+            if param in min_max and value:
+                if isinstance(value, (int, float)):
+                    value = (value, value)
+                query_params.update(
+                    {
+                        f"{param}_min": value[0],
+                        f"{param}_max": value[1],
+                    }
+                )
 
         if molecule_ids:
             if isinstance(molecule_ids, str):
@@ -79,18 +103,6 @@ class MoleculesBondRester(BaseRester[MoleculeBondingDoc]):
                 property_ids = [property_ids]
 
             query_params.update({"property_ids": ",".join(property_ids)})
-
-        if method:
-            query_params.update({"method": method})
-
-        if bond_type:
-            query_params.update({"bond_type": bond_type})
-
-        if max_bond_length:
-            query_params.update({"max_bond_length": max_bond_length})
-
-        if min_bond_length:
-            query_params.update({"min_bond_length": max_bond_length})
 
         if charge:
             query_params.update({"charge": charge})
@@ -124,6 +136,18 @@ class MoleculesBondRester(BaseRester[MoleculeBondingDoc]):
 
         if exclude_elements:
             query_params.update({"exclude_elements": ",".join(exclude_elements)})
+
+        if moment_type:
+            query_params.update({"moment_type": moment_type})
+
+        if component:
+            query_params.update({"component": component})
+        
+        if min_component_value:
+            query_params.update({"min_component_value": min_component_value})
+
+        if max_component_value:
+            query_params.update({"max_component_value": max_component_value})
 
         return super()._search(
             num_chunks=num_chunks,

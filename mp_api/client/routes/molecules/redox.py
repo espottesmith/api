@@ -73,7 +73,7 @@ class MoleculesRedoxRester(BaseRester[RedoxDoc]):
             num_chunks (int): Maximum number of chunks of data to yield. None will yield all possible.
             chunk_size (int): Number of data entries per chunk.
             all_fields (bool): Whether to return all fields in the document. Defaults to True.
-            fields (List[str]): List of fields in MoleculeDoc to return data for.
+            fields (List[str]): List of fields in RedoxDoc to return data for.
                 Default is "molecule_id", "property_id", "solvent", "method", "last_updated"
                 if all_fields is False.
 

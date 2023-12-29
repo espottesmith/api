@@ -132,7 +132,7 @@ class BaseMoleculeRester(BaseRester[MoleculeDoc]):
             chunk_size (int): Number of data entries per chunk.
             all_fields (bool): Whether to return all fields in the document. Defaults to True.
             fields (List[str]): List of fields in MoleculeDoc to return data for.
-                Default is molecule_id, last_updated, and formula_alphabetical if all_fields is False.
+                Default is "molecule_id", "last_updated", and "formula_alphabetical" if all_fields is False.
 
         Returns:
             ([MoleculeDoc]) List of molecules documents
