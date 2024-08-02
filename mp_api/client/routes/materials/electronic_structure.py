@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import warnings
 from collections import defaultdict
 
@@ -8,6 +9,7 @@ from emmet.core.electronic_structure import (
     DOSProjectionType,
     ElectronicStructureDoc,
 )
+from monty.json import MontyDecoder
 from pymatgen.analysis.magnetism.analyzer import Ordering
 from pymatgen.core.periodic_table import Element
 from pymatgen.electronic_structure.core import OrbitalType, Spin
@@ -41,8 +43,8 @@ class ElectronicStructureRester(BaseRester[ElectronicStructureDoc]):
         elements: list[str] | None = None,
         exclude_elements: list[str] | None = None,
         formula: str | list[str] | None = None,
-        is_gap_direct: bool = None,
-        is_metal: bool = None,
+        is_gap_direct: bool | None = None,
+        is_metal: bool | None = None,
         magnetic_ordering: Ordering | None = None,
         num_elements: tuple[int, int] | None = None,
         num_chunks: int | None = None,
@@ -161,8 +163,8 @@ class BandStructureRester(BaseRester):
         self,
         band_gap: tuple[float, float] | None = None,
         efermi: tuple[float, float] | None = None,
-        is_gap_direct: bool = None,
-        is_metal: bool = None,
+        is_gap_direct: bool | None = None,
+        is_metal: bool | None = None,
         magnetic_ordering: Ordering | None = None,
         path_type: BSPathType = BSPathType.setyawan_curtarolo,
         num_chunks: int | None = None,
@@ -232,12 +234,16 @@ class BandStructureRester(BaseRester):
         Returns:
             bandstructure (BandStructure): BandStructure or BandStructureSymmLine object
         """
+        decoder = MontyDecoder().decode if self.monty_decode else json.loads
         result = self._query_open_data(
-            bucket="materialsproject-parsed", prefix="bandstructures", key=task_id
-        )
+            bucket="materialsproject-parsed",
+            key=f"bandstructures/{task_id}.json.gz",
+            decoder=decoder,
+            fields=["data"],
+        )[0]
 
-        if result.get("data", None) is not None:
-            return result["data"]
+        if result:
+            return result[0]["data"]
         else:
             raise MPRestError("No object found")
 
@@ -262,16 +268,26 @@ class BandStructureRester(BaseRester):
         )
 
         if line_mode:
-            bs_data = es_rester.get_data_by_id(
-                document_id=material_id, fields=["bandstructure"]
-            ).bandstructure
+            bs_doc = es_rester.search(
+                material_ids=material_id, fields=["bandstructure"]
+            )
+            if not bs_doc:
+                raise MPRestError("No electronic structure data found.")
+
+            bs_data = (
+                bs_doc[0].bandstructure  # type: ignore
+                if self.use_document_model
+                else bs_doc[0]["bandstructure"]  # type: ignore
+            )
 
             if bs_data is None:
                 raise MPRestError(
                     f"No {path_type.value} band structure data found for {material_id}"
                 )
             else:
-                bs_data = bs_data.model_dump()
+                bs_data: dict = (
+                    bs_data.model_dump() if self.use_document_model else bs_data  # type: ignore
+                )
 
             if bs_data.get(path_type.value, None):
                 bs_task_id = bs_data[path_type.value]["task_id"]
@@ -280,16 +296,25 @@ class BandStructureRester(BaseRester):
                     f"No {path_type.value} band structure data found for {material_id}"
                 )
         else:
-            bs_data = es_rester.get_data_by_id(
-                document_id=material_id, fields=["dos"]
-            ).dos
+            bs_doc = es_rester.search(material_ids=material_id, fields=["dos"])
+
+            if not bs_doc:
+                raise MPRestError("No electronic structure data found.")
+
+            bs_data = (
+                bs_doc[0].dos  # type: ignore
+                if self.use_document_model
+                else bs_doc[0]["dos"]  # type: ignore
+            )
 
             if bs_data is None:
                 raise MPRestError(
                     f"No uniform band structure data found for {material_id}"
                 )
             else:
-                bs_data = bs_data.model_dump()
+                bs_data: dict = (
+                    bs_data.model_dump() if self.use_document_model else bs_data  # type: ignore
+                )
 
             if bs_data.get("total", None):
                 bs_task_id = bs_data["total"]["1"]["task_id"]
@@ -399,12 +424,16 @@ class DosRester(BaseRester):
         Returns:
             bandstructure (CompleteDos): CompleteDos object
         """
+        decoder = MontyDecoder().decode if self.monty_decode else json.loads
         result = self._query_open_data(
-            bucket="materialsproject-parsed", prefix="dos", key=task_id
-        )
+            bucket="materialsproject-parsed",
+            key=f"dos/{task_id}.json.gz",
+            decoder=decoder,
+            fields=["data"],
+        )[0]
 
-        if result.get("data", None) is not None:
-            return result["data"]
+        if result:
+            return result[0]["data"]  # type: ignore
         else:
             raise MPRestError("No object found")
 
@@ -421,9 +450,13 @@ class DosRester(BaseRester):
             endpoint=self.base_endpoint, api_key=self.api_key
         )
 
-        dos_data = es_rester.get_data_by_id(
-            document_id=material_id, fields=["dos"]
-        ).model_dump()
+        dos_doc = es_rester.search(material_ids=material_id, fields=["dos"])
+        if not dos_doc:
+            return None
+
+        dos_data: dict = (
+            dos_doc[0].model_dump() if self.use_document_model else dos_doc[0]  # type: ignore
+        )
 
         if dos_data["dos"]:
             dos_task_id = dos_data["dos"]["total"]["1"]["task_id"]

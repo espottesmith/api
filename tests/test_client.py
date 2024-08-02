@@ -18,16 +18,14 @@ key_only_resters = {
 }
 
 search_only_resters = [
-    "materials_grain_boundary",
+    "materials_grain_boundaries",
     "materials_electronic_structure_bandstructure",
     "materials_electronic_structure_dos",
     "materials_substrates",
     "materials_synthesis",
 ]
 
-special_resters = [
-    "materials_charge_density",
-]
+special_resters = ["materials_charge_density", "doi"]
 
 ignore_generic = [
     "_user_settings",
@@ -38,7 +36,7 @@ ignore_generic = [
     "materials_xas",
     "materials_elasticity",
     "materials_fermi",
-    # "alloys",
+    "materials_alloys",
     # "summary",
 ]  # temp
 

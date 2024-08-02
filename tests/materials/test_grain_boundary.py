@@ -4,7 +4,7 @@ from core_function import client_search_testing
 import pytest
 from emmet.core.grain_boundary import GBTypeEnum
 
-from mp_api.client.routes.materials.grain_boundary import GrainBoundaryRester
+from mp_api.client.routes.materials.grain_boundaries import GrainBoundaryRester
 
 
 @pytest.fixture
@@ -24,7 +24,10 @@ excluded_params = [
 
 sub_doc_fields = []  # type: list
 
-alt_name_dict = {"material_ids": "task_id", "separation_energy": "w_sep"}  # type: dict
+alt_name_dict = {
+    "material_ids": "material_id",
+    "separation_energy": "w_sep",
+}  # type: dict
 
 custom_field_tests = {
     "material_ids": ["mp-81"],

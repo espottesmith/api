@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import warnings
-
 from emmet.core.settings import EmmetSettings
 from emmet.core.symmetry import CrystalSystem
 from emmet.core.vasp.material import MaterialsDoc
@@ -14,7 +12,6 @@ from mp_api.client.routes.materials import (
     AlloysRester,
     BandStructureRester,
     BondsRester,
-    ChargeDensityRester,
     ChemenvRester,
     DielectricRester,
     DosRester,
@@ -22,7 +19,6 @@ from mp_api.client.routes.materials import (
     ElectrodeRester,
     ElectronicStructureRester,
     EOSRester,
-    FermiRester,
     GrainBoundaryRester,
     MagnetismRester,
     OxidationStatesRester,
@@ -40,7 +36,7 @@ from mp_api.client.routes.materials import (
     XASRester,
 )
 
-_EMMET_SETTINGS = EmmetSettings()
+_EMMET_SETTINGS = EmmetSettings()  # type: ignore
 
 
 class MaterialsRester(BaseRester[MaterialsDoc]):
@@ -53,8 +49,7 @@ class MaterialsRester(BaseRester[MaterialsDoc]):
         "similarity",
         "tasks",
         "xas",
-        "fermi",
-        "grain_boundary",
+        "grain_boundaries",
         "substrates",
         "surface_properties",
         "phonon",
@@ -67,7 +62,6 @@ class MaterialsRester(BaseRester[MaterialsDoc]):
         "robocrys",
         "synthesis",
         "insertion_electrodes",
-        "charge_density",
         "electronic_structure",
         "electronic_structure_bandstructure",
         "electronic_structure_dos",
@@ -85,7 +79,6 @@ class MaterialsRester(BaseRester[MaterialsDoc]):
     similarity: SimilarityRester
     tasks: TaskRester
     xas: XASRester
-    fermi: FermiRester
     grain_boundary: GrainBoundaryRester
     substrates: SubstratesRester
     surface_properties: SurfacePropertiesRester
@@ -99,7 +92,6 @@ class MaterialsRester(BaseRester[MaterialsDoc]):
     robocrys: RobocrysRester
     synthesis: SynthesisRester
     insertion_electrodes: ElectrodeRester
-    charge_density: ChargeDensityRester
     electronic_structure: ElectronicStructureRester
     electronic_structure_bandstructure: BandStructureRester
     electronic_structure_dos: DosRester
@@ -127,23 +119,16 @@ class MaterialsRester(BaseRester[MaterialsDoc]):
             structure (Union[Structure, List[Structure]]): Pymatgen structure object or list of
                 pymatgen structure objects.
         """
-        if final:
-            response = self.get_data_by_id(material_id, fields=["structure"])
-            return response.structure if response is not None else response  # type: ignore
-        else:
-            response = self.get_data_by_id(material_id, fields=["initial_structures"])
-            return response.initial_structures if response is not None else response  # type: ignore
+        field = "structure" if final else "initial_structures"
 
-    def search_material_docs(self, *args, **kwargs):  # pragma: no cover
-        """Deprecated."""
-        warnings.warn(
-            "MPRester.materials.search_material_docs is deprecated. "
-            "Please use MPRester.materials.search instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
+        response = self.search(material_ids=material_id, fields=[field])
 
-        return self.search(*args, **kwargs)
+        if response:
+            response = (
+                response[0].model_dump() if self.use_document_model else response[0]  # type: ignore
+            )
+
+        return response[field] if response else response  # type: ignore
 
     def search(
         self,
@@ -165,7 +150,7 @@ class MaterialsRester(BaseRester[MaterialsDoc]):
         chunk_size: int = 1000,
         all_fields: bool = True,
         fields: list[str] | None = None,
-    ):
+    ) -> list[MaterialsDoc] | list[dict]:
         """Query core material docs using a variety of search criteria.
 
         Arguments:
@@ -194,7 +179,7 @@ class MaterialsRester(BaseRester[MaterialsDoc]):
                 Default is material_id, last_updated, and formula_pretty if all_fields is False.
 
         Returns:
-            ([MaterialsDoc]) List of material documents
+            ([MaterialsDoc], [dict]) List of material documents or dictionaries.
         """
         query_params = {"deprecated": deprecated}  # type: dict
 
